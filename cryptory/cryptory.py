@@ -29,7 +29,7 @@ class Cryptory():
         to_date : the end date (as string) for the returned data;
             required format is %Y-%m-%d (e.g. "2017-06-21")
             Optional. If unspecified, it will default to the current day
-        to_date : binary. Determines whether the returned dataframes are
+        ascending : binary. Determines whether the returned dataframes are
             ordered by date in ascending or descending order 
             (defaults to False i.e. most recent first)
         fillgaps : binary. When data does not exist (e.g. weekends for stocks)
@@ -138,6 +138,8 @@ class Cryptory():
         output.columns = [col.lower() for col in output.columns]
         if coin_col:
             output['coin'] = coin
+
+        output = output.sort_values(by='date', ascending=self.ascending).reset_index(drop=True)
         return output
     
     def extract_bitinfocharts(self, coin, metric="price", coin_col=False, metric_col=False):
